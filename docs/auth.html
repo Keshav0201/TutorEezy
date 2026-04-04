@@ -20,7 +20,7 @@
       <h2>Welcome Back 👋</h2>
       <input type="text" id="login-email" placeholder="Email">
       <input type="password" id="login-password" placeholder="Password">
-      <button onclick="login()" id="login-button">Login</button>
+      <button id="login-button">Login</button>
     </div>
 
     <!-- SIGNUP -->
@@ -29,13 +29,13 @@
       <input type="text" id="signup-name" placeholder="Name">
       <input type="text" id="signup-email" placeholder="Email">
       <input type="password" id="signup-password" placeholder="Password">
-      <button onclick="signup()" id="signup-button">Signup</button>
+      <button id="signup-button">Signup</button>
     </div>
 
   </div>
 
-  <script src="./js/config.js"></script>
-  <script src="./js/auth.js"></script>
+  <script type="module" src="./js/config.js"></script>
+  <script type="module" src="./js/auth.js"></script>
   <script>
     const loginTab = document.getElementById("loginTab");
     const signupTab = document.getElementById("signupTab");

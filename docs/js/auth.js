@@ -79,6 +79,10 @@ document
 
 checkLogin();
 
-// expose functions to HTML
-window.signup = signup;
-window.login = login;
+document
+  .getElementById("signup-button")
+  .addEventListener("click", signup);
+
+document
+  .getElementById("login-button")
+  .addEventListener("click", login);

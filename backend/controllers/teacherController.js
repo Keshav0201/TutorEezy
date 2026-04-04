@@ -3,7 +3,7 @@ const teacherModel = require("../models/teacherModel");
 async function addDetails(req, res) {
   const user_id = req.user.id;
   const { experience, qualification, bio, hourly_rate } = req.body;
-  if (!experience || !qualification || hourly_rate == null || bio == null) {
+  if (experience === undefined || !qualification || hourly_rate == null || bio == null) {
     return res.status(400).json({
       error: "All fields are required",
     });

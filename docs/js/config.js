@@ -1,8 +1,8 @@
-const baseURL=window.location.hostname === "127.0.0.1"
+export const BASE_URL = window.location.hostname === "127.0.0.1"
     ? "http://localhost:3016/api"
     : "https://todo-1-zju0.onrender.com";;
 
-async function fetchWithRetry(url, options, retries = 3, delay = 2000) {
+export async function fetchWithRetry(url, options, retries = 3, delay = 2000) {
   try {
     const res = await fetch(url, options);
 

@@ -32,7 +32,7 @@ async function apiRequest(endpoint, options = {}) {
   };
 
   try {
-    const response = await fetchWithRetry(`${BASE_URL}${endpoint}`, config);
+    const response = await fetch(`${BASE_URL}${endpoint}`, config);
 
     let data;
     try {
@@ -104,10 +104,10 @@ export async function addTeacherDetails({
   });
 }
 
-export async function addSubjects(subjects) {
+export async function addSubjects(subject) {
   return apiRequest("/teachers/subjects", {
     method: "POST",
-    body: JSON.stringify({ subjects })
+    body: JSON.stringify( subject )
   });
 }
 
@@ -180,5 +180,13 @@ export async function rejectClass(classId) {
 export async function getClassDetails(classId) {
   return apiRequest(`/classes/${classId}`, {
     method: "GET"
+  });
+}
+
+
+export async function addStudentDetails({ grade }) {
+  return apiRequest("/students/details", {
+    method: "POST",
+    body: JSON.stringify({ grade })
   });
 }

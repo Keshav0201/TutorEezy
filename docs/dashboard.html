@@ -1,12 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-</head>
-<body>
-    <button onclick="logout()">logout</button>
-    <script src="./js/dashboard.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>TutorEezy Dashboard</title>
+    <link rel="stylesheet" href="./css/dashboard.css" />
+  </head>
+  <body>
+    <!-- 🔝 NAVBAR -->
+    <nav class="navbar">
+      <div class="logo">TutorEezy</div>
+      <button id="logout-btn">Logout</button>
+    </nav>
+
+    <!-- 📦 MAIN CONTAINER -->
+    <div class="container">
+      <!-- 📚 SIDEBAR -->
+      <aside id="sidebar" class="sidebar hidden">
+        <ul>
+          <li data-page="profile">Profile</li>
+          <li data-page="pending">Pending Classes</li>
+          <li data-page="active">Active Classes</li>
+          <li data-page="schedule">Schedule</li>
+          <li id="add-slots" data-page="slots">Add Slots</li>
+        </ul>
+      </aside>
+
+      <!-- 📄 CONTENT -->
+      <main id="content" class="content">
+        <h2>Welcome to TutorEezy</h2>
+      </main>
+    </div>
+
+    <!-- 🧾 ONBOARDING MODAL -->
+    <div id="modal" class="modal hidden">
+      <div class="modal-card">
+        <!-- Progress -->
+        <div class="progress">
+          <div id="progress-bar"></div>
+        </div>
+
+        <!-- STEP 1 -->
+        <div id="step-role" class="step">
+          <h2>Welcome to TutorEezy 👋</h2>
+          <p>Select how you want to use the platform</p>
+
+          <div class="role-options">
+            <button class="role-btn" id="student-btn">🎓 Student</button>
+            <button class="role-btn" id="teacher-btn">👨‍🏫 Teacher</button>
+          </div>
+        </div>
+
+        <!-- STEP 2A -->
+        <div id="step-student" class="step hidden">
+          <h2>Your Class</h2>
+          <input type="text" id="student-grade" placeholder="e.g. 10th" />
+          <button class="primary-btn" id="submit-student">Continue</button>
+        </div>
+
+        <!-- STEP 2B -->
+        <div id="step-teacher" class="step hidden">
+          <h2>Teacher Profile</h2>
+
+          <input type="text" id="qualification" placeholder="Qualification" />
+          <input type="number" id="rate" placeholder="Hourly Rate" />
+          <textarea id="bio" placeholder="Short bio"></textarea>
+
+          <div class="subjects">
+            <label>Select Subjects</label>
+
+            <div class="checkbox-group">
+              <label class="checkbox-item">
+                <input type="checkbox" value="Math" />
+                <span>Math</span>
+              </label>
+
+              <label class="checkbox-item">
+                <input type="checkbox" value="Physics" />
+                <span>Physics</span>
+              </label>
+
+              <label class="checkbox-item">
+                <input type="checkbox" value="Chemistry" />
+                <span>Chemistry</span>
+              </label>
+
+              <label class="checkbox-item">
+                <input type="checkbox" value="Biology" />
+                <span>Biology</span>
+              </label>
+            </div>
+          </div>
+
+          <button class="primary-btn" id="submit-teacher">Finish</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./js/dashboard.js"></script>
+  </body>
 </html>
