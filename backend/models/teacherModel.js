@@ -14,7 +14,7 @@ function addDetails(data, callback) {
 
     // ✅ update users table
     const updateQuery = `
-      UPDATE users SET isTeaching = true WHERE id = ?
+      UPDATE users SET isTeaching = true, newUser = false WHERE id = ?
     `;
 
     db.query(updateQuery, [user_id], (err2) => {
