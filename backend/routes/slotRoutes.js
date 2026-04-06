@@ -16,4 +16,6 @@ router.get("/available/:teacherId", slotController.getAvailableSlots);
 // ➤ Delete slot
 router.delete("/:slotId", verifyToken, slotController.deleteSlot);
 
+router.get("/booked",verifyToken,slotController.getBookedSlots);
+
 module.exports = router;

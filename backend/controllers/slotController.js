@@ -91,9 +91,28 @@ async function deleteSlot(req, res) {
   });
 }
 
+async function getBookedSlots(req,res) {
+  const user_id = req.user.id;
+  slotModel.getBookedSlots(user_id, (err,result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({
+        error: "Database error",
+      });
+    }
+
+    res.json({
+      success: true,
+      slots: result
+    });
+
+  })
+}
+
 module.exports = {
   createSlot,
   getTeacherSlots,
   getAvailableSlots,
   deleteSlot,
+  getBookedSlots
 };

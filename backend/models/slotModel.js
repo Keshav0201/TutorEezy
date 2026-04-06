@@ -42,7 +42,6 @@ function createSlot({ teacher_id, start_time, end_time }, callback) {
   });
 }
 
-
 // ➤ Get All Slots of Teacher
 function getTeacherSlots(teacher_id, callback) {
   const query = `
@@ -59,7 +58,6 @@ function getTeacherSlots(teacher_id, callback) {
   });
 }
 
-
 // ➤ Get Only Available Slots
 function getAvailableSlots(teacher_id, callback) {
   const query = `
@@ -75,7 +73,6 @@ function getAvailableSlots(teacher_id, callback) {
     callback(null, result);
   });
 }
-
 
 // ➤ Delete Slot (secured)
 function deleteSlot(slot_id, teacher_id, callback) {
@@ -95,10 +92,35 @@ function deleteSlot(slot_id, teacher_id, callback) {
   });
 }
 
+function getBookedSlots(user_id, callback){
+  const userQuery = "SELECT isTeaching FROM users WHERE id = ?";
+  db.query(userQuery,[user_id],(err,userResult) => {
+    if (err) return callback(err, null);
+    if (userResult.length === 0) return callback("User not found", null);
+
+    const isTeacher = userResult[0].isTeaching;
+    const query = `
+  SELECT ts.start_time, ts.end_time, c.subject
+  FROM classes c
+  JOIN teacher_slots ts ON ts.class_id = c.id
+  WHERE ${isTeacher ? "c.teacher_id = ?" : "c.student_id = ?"}
+  AND ts.status = 'booked'
+  ORDER BY ts.start_time ASC
+`;
+
+    db.query(query, [user_id], (err,result) => {
+      if (err) return callback(err, null);
+
+      callback(null, result);
+    });
+
+  })
+}
 
 module.exports = {
   createSlot,
   getTeacherSlots,
   getAvailableSlots,
   deleteSlot,
+  getBookedSlots
 };

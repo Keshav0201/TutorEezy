@@ -7,7 +7,8 @@ import {
   getPendingClasses, 
   acceptClass, 
   rejectClass,
-  getActiveClasses
+  getActiveClasses,
+  getBookedSlots
 } from "./api.js";
 
 const sidebar = document.getElementById("sidebar");
@@ -273,8 +274,74 @@ function renderPendingCard(cls) {
   `;
 }
 
-function renderSchedule() {
-  document.getElementById("content").innerHTML = `<h2>Schedule</h2>`;
+async function renderSchedule() {
+  const content = document.getElementById("content");
+
+  content.innerHTML = `<p>Loading schedule...</p>`;
+
+  try {
+    const res = await getBookedSlots();
+    const slots = res.slots || [];
+
+    if (!slots.length) {
+      content.innerHTML = `<p>No scheduled classes</p>`;
+      return;
+    }
+
+    const grouped = groupSlotsByDate(slots);
+
+    content.innerHTML = `
+      <h2>Schedule</h2>
+      <div class="schedule-container">
+        ${Object.keys(grouped).map(date => renderDay(date, grouped[date])).join("")}
+      </div>
+    `;
+
+  } catch (err) {
+    console.error(err);
+    content.innerHTML = `<p>Error loading schedule</p>`;
+  }
+}
+
+function groupSlotsByDate(slots) {
+  const map = {};
+
+  slots.forEach(slot => {
+    const date = new Date(slot.start_time).toDateString();
+
+    if (!map[date]) map[date] = [];
+
+    map[date].push(slot);
+  });
+
+  return map;
+}
+
+function renderDay(date, slots) {
+  return `
+    <div class="day-card">
+      <h3>${formatDate(date)}</h3>
+
+      ${slots.map(slot => `
+        <div class="slot-item">
+          <span class="time">
+            ${formatTime(slot.start_time)} - ${formatTime(slot.end_time)}
+          </span>
+          <span class="subject">${slot.subject}</span>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function formatDate(dateStr) {
+  const date = new Date(dateStr);
+
+  return date.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    weekday: "short",
+  });
 }
 
 function renderSlots() {

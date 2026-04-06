@@ -202,3 +202,9 @@ export async function addStudentDetails({ grade }) {
     body: JSON.stringify({ grade })
   });
 }
+
+export async function getBookedSlots() {
+  return apiRequest("/slots/booked", {
+    method: "GET",
+  });
+}
