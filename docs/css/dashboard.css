@@ -258,10 +258,11 @@ body {
 .slot-item {
   display: flex;
   justify-content: space-between;
-  padding: 8px 10px;
-  border-radius: 6px;
+  align-items: center;
   background: #f1f2f6;
-  margin-bottom: 6px;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
 }
 
 .slot-item .time {
@@ -274,4 +275,41 @@ body {
   padding: 2px 8px;
   border-radius: 5px;
   font-size: 12px;
+}
+
+.card select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
+#slots-list {
+  margin-top: 20px;
+}
+
+
+.status {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* FREE */
+.status.free {
+  background: #d4f8d4;
+  color: #2ecc71;
+}
+
+/* PENDING */
+.status.pending {
+  background: #fff3cd;
+  color: #f39c12;
+}
+
+/* BOOKED */
+.status.booked {
+  background: #f8d7da;
+  color: #e74c3c;
 }

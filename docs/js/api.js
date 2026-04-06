@@ -121,15 +121,21 @@ export async function getSubjects(teacherId) {
 // ⏰ SLOT APIs
 // ==============================
 
-export async function createSlot({ start_time, end_time }) {
+export async function createSlot({ day_of_week, start_time, end_time }) {
   return apiRequest("/slots", {
     method: "POST",
-    body: JSON.stringify({ start_time, end_time })
+    body: JSON.stringify({ day_of_week, start_time, end_time })
   });
 }
 
 export async function getTeacherSlots(teacherId) {
   return apiRequest(`/slots/teacher/${teacherId}`, {
+    method: "GET"
+  });
+}
+
+export async function getMySlots() {
+  return apiRequest("/slots", {
     method: "GET"
   });
 }

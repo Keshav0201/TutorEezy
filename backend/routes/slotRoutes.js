@@ -7,6 +7,8 @@ const { verifyToken } = require("../middlewares/authMiddleware");
 // ➤ Create Slot
 router.post("/", verifyToken, slotController.createSlot);
 
+router.get("/", verifyToken,slotController.getMySlots);
+
 // ➤ Get all slots of teacher
 router.get("/teacher/:teacherId", slotController.getTeacherSlots);
 

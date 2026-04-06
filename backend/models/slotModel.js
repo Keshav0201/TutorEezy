@@ -3,49 +3,56 @@ const { v4: uuidv4 } = require("uuid");
 
 
 // ➤ Create Slot (with overlap check)
-function createSlot({ teacher_id, start_time, end_time }, callback) {
+function createSlot({ teacher_id, day_of_week, start_time, end_time }, callback) {
   const id = uuidv4();
 
-  // 🔥 Check overlapping slots
   const checkQuery = `
     SELECT * FROM teacher_slots
     WHERE teacher_id = ?
+    AND day_of_week = ?
     AND (
-      (start_time < ? AND end_time > ?)
+      start_time < ? AND end_time > ?
     )
   `;
 
-  db.query(checkQuery, [teacher_id, end_time, start_time], (err, result) => {
-    if (err) return callback(err, null);
-
-    if (result.length > 0) {
-      return callback({ message: "Slot overlaps with existing slot" }, null);
-    }
-
-    // ➤ Insert slot
-    const insertQuery = `
-      INSERT INTO teacher_slots
-      (id, teacher_id, start_time, end_time)
-      VALUES (?, ?, ?, ?)
-    `;
-
-    db.query(insertQuery, [id, teacher_id, start_time, end_time], (err) => {
+  db.query(
+    checkQuery,
+    [teacher_id, day_of_week, end_time, start_time],
+    (err, result) => {
       if (err) return callback(err, null);
 
-      // ✅ Better response
-      callback(null, {
-        slot_id: id,
-        start_time,
-        end_time,
-      });
-    });
-  });
+      if (result.length > 0) {
+        return callback({ message: "Slot overlaps with existing slot" }, null);
+      }
+
+      const insertQuery = `
+        INSERT INTO teacher_slots
+        (id, teacher_id, day_of_week, start_time, end_time)
+        VALUES (?, ?, ?, ?, ?)
+      `;
+
+      db.query(
+        insertQuery,
+        [id, teacher_id, day_of_week, start_time, end_time],
+        (err) => {
+          if (err) return callback(err, null);
+
+          callback(null, {
+            slot_id: id,
+            day_of_week,
+            start_time,
+            end_time,
+          });
+        }
+      );
+    }
+  );
 }
 
 // ➤ Get All Slots of Teacher
 function getTeacherSlots(teacher_id, callback) {
   const query = `
-    SELECT id, start_time, end_time, status
+    SELECT id, day_of_week,start_time, end_time, status
     FROM teacher_slots
     WHERE teacher_id = ?
     ORDER BY start_time ASC
@@ -61,7 +68,7 @@ function getTeacherSlots(teacher_id, callback) {
 // ➤ Get Only Available Slots
 function getAvailableSlots(teacher_id, callback) {
   const query = `
-    SELECT id, start_time, end_time
+    SELECT id, day_of_week,start_time, end_time
     FROM teacher_slots
     WHERE teacher_id = ? AND status = 'free'
     ORDER BY start_time ASC
@@ -100,7 +107,7 @@ function getBookedSlots(user_id, callback){
 
     const isTeacher = userResult[0].isTeaching;
     const query = `
-  SELECT ts.start_time, ts.end_time, c.subject
+  SELECT ts.start_time, ts.end_time, ts.day_of_week, c.subject
   FROM classes c
   JOIN teacher_slots ts ON ts.class_id = c.id
   WHERE ${isTeacher ? "c.teacher_id = ?" : "c.student_id = ?"}
@@ -117,10 +124,36 @@ function getBookedSlots(user_id, callback){
   })
 }
 
+
+function getMySlots(userId, callback) {
+  const query = `
+    SELECT 
+      id,
+      day_of_week,
+      start_time,
+      end_time,
+      status
+    FROM teacher_slots
+    WHERE teacher_id = ?
+    ORDER BY 
+      FIELD(day_of_week, 
+        'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'
+      ),
+      start_time ASC
+  `;
+
+  db.query(query, [userId], (err, result) => {
+    if (err) return callback(err, null);
+
+    callback(null, result); // empty array is fine
+  });
+}
+
 module.exports = {
   createSlot,
   getTeacherSlots,
   getAvailableSlots,
   deleteSlot,
-  getBookedSlots
+  getBookedSlots,
+  getMySlots
 };

@@ -4,11 +4,13 @@ import {
   addSubjects,
   addStudentDetails,
   getSubjects,
-  getPendingClasses, 
-  acceptClass, 
+  getPendingClasses,
+  acceptClass,
   rejectClass,
   getActiveClasses,
-  getBookedSlots
+  getBookedSlots,
+  getMySlots, 
+  createSlot
 } from "./api.js";
 
 const sidebar = document.getElementById("sidebar");
@@ -81,7 +83,7 @@ function loadPage(page) {
 // SIDEBAR CLICK
 // ==============================
 
-document.querySelectorAll(".sidebar li").forEach(item => {
+document.querySelectorAll(".sidebar li").forEach((item) => {
   item.addEventListener("click", () => {
     const page = item.dataset.page;
     loadPage(page);
@@ -89,7 +91,7 @@ document.querySelectorAll(".sidebar li").forEach(item => {
 });
 
 function setActiveTab(page) {
-  document.querySelectorAll(".sidebar li").forEach(li => {
+  document.querySelectorAll(".sidebar li").forEach((li) => {
     li.classList.remove("active");
   });
 
@@ -116,17 +118,27 @@ async function renderProfile() {
       extraInfo = `
         <div class="card">
           <h3>Teacher Info</h3>
-          <p><strong>Qualification:</strong> ${currentUser.teacherDetails.qualification || "N/A"}</p>
-          <p><strong>Hourly Rate:</strong> ₹${currentUser.teacherDetails.hourly_rate || "N/A"}</p>
-          <p><strong>Bio:</strong> ${currentUser.teacherDetails.bio || "N/A"}</p>
-          <p><strong>Subjects:</strong> ${subjects.map(s => s.subject).join(", ")}</p>
+          <p><strong>Qualification:</strong> ${
+            currentUser.teacherDetails.qualification || "N/A"
+          }</p>
+          <p><strong>Hourly Rate:</strong> ₹${
+            currentUser.teacherDetails.hourly_rate || "N/A"
+          }</p>
+          <p><strong>Bio:</strong> ${
+            currentUser.teacherDetails.bio || "N/A"
+          }</p>
+          <p><strong>Subjects:</strong> ${subjects
+            .map((s) => s.subject)
+            .join(", ")}</p>
         </div>
       `;
     } else {
       extraInfo = `
         <div class="card">
           <h3>Student Info</h3>
-          <p><strong>Grade:</strong> ${currentUser.studentDetails.grade || "N/A"}</p>
+          <p><strong>Grade:</strong> ${
+            currentUser.studentDetails.grade || "N/A"
+          }</p>
         </div>
       `;
     }
@@ -136,7 +148,9 @@ async function renderProfile() {
         <h2>Profile</h2>
         <p><strong>Name:</strong> ${currentUser.name}</p>
         <p><strong>Email:</strong> ${currentUser.email}</p>
-        <p><strong>Role:</strong> ${currentUser.isTeaching ? "Teacher" : "Student"}</p>
+        <p><strong>Role:</strong> ${
+          currentUser.isTeaching ? "Teacher" : "Student"
+        }</p>
       </div>
 
       ${extraInfo}
@@ -170,7 +184,7 @@ async function renderActive() {
     content.innerHTML = `
       <h2>Active Classes</h2>
       <div class="card-list">
-        ${grouped.map(cls => renderActiveCard(cls)).join("")}
+        ${grouped.map((cls) => renderActiveCard(cls)).join("")}
       </div>
     `;
   } catch (err) {
@@ -189,25 +203,27 @@ function renderActiveCard(cls) {
 
       <p><strong>Time:</strong></p>
       <ul>
-        ${cls.slots.map(slot => `
+        ${cls.slots
+          .map(
+            (slot) => `
           <li>
-            ${formatTime(slot.start_time)} - ${formatTime(slot.end_time)}
+            ${slot.day_of_week} → ${formatOnlyTime(
+              slot.start_time
+            )} - ${formatOnlyTime(slot.end_time)}
           </li>
-        `).join("")}
+        `
+          )
+          .join("")}
       </ul>
     </div>
   `;
 }
 
-function formatTime(time) {
-  if (!time) return "Not scheduled";
+function formatOnlyTime(time) {
+  const safe = time.includes("T") ? time : `1970-01-01T${time}`;
+  const date = new Date(safe);
 
-  const safeTime = time.includes("T") ? time : time.replace(" ", "T");
-  const date = new Date(safeTime);
-
-  return date.toLocaleString("en-IN", {
-    day: "numeric",
-    month: "short",
+  return date.toLocaleTimeString("en-IN", {
     hour: "numeric",
     minute: "numeric",
     hour12: true,
@@ -233,10 +249,9 @@ async function renderPending() {
     content.innerHTML = `
       <h2>Pending Classes</h2>
       <div class="card-list">
-        ${grouped.map(cls => renderPendingCard(cls)).join("")}
+        ${grouped.map((cls) => renderPendingCard(cls)).join("")}
       </div>
     `;
-
   } catch (err) {
     console.error(err);
     content.innerHTML = `<p>Error loading classes</p>`;
@@ -253,11 +268,18 @@ function renderPendingCard(cls) {
 
       <p><strong>Time:</strong></p>
       <ul>
-        ${cls.slots.map(slot => `
+        ${cls.slots
+          .map(
+            (slot) => `
           <li>
-            ${formatTime(slot.start_time)} - ${formatTime(slot.end_time)}
+            ${slot.day_of_week} → 
+            ${formatOnlyTime(slot.start_time)} - ${formatOnlyTime(
+              slot.end_time
+            )}
           </li>
-        `).join("")}
+        `
+          )
+          .join("")}
       </ul>
 
       ${
@@ -288,44 +310,45 @@ async function renderSchedule() {
       return;
     }
 
-    const grouped = groupSlotsByDate(slots);
+    const grouped = groupSlotsByDay(slots);
 
     content.innerHTML = `
-      <h2>Schedule</h2>
-      <div class="schedule-container">
-        ${Object.keys(grouped).map(date => renderDay(date, grouped[date])).join("")}
-      </div>
-    `;
-
+  <h2>Schedule</h2>
+  <div class="schedule-container">
+    ${Object.keys(grouped)
+      .map((day) => renderDay(day, grouped[day]))
+      .join("")}
+  </div>
+`;
   } catch (err) {
     console.error(err);
     content.innerHTML = `<p>Error loading schedule</p>`;
   }
 }
 
-function groupSlotsByDate(slots) {
+function groupSlotsByDay(slots) {
   const map = {};
 
-  slots.forEach(slot => {
-    const date = new Date(slot.start_time).toDateString();
+  slots.forEach((slot) => {
+    const day = slot.day_of_week;
 
-    if (!map[date]) map[date] = [];
+    if (!map[day]) map[day] = [];
 
-    map[date].push(slot);
+    map[day].push(slot);
   });
 
   return map;
 }
 
-function renderDay(date, slots) {
+function renderDay(day, slots) {
   return `
     <div class="day-card">
-      <h3>${formatDate(date)}</h3>
+      <h3>${day}</h3>
 
       ${slots.map(slot => `
         <div class="slot-item">
           <span class="time">
-            ${formatTime(slot.start_time)} - ${formatTime(slot.end_time)}
+            ${formatOnlyTime(slot.start_time)} - ${formatOnlyTime(slot.end_time)}
           </span>
           <span class="subject">${slot.subject}</span>
         </div>
@@ -334,19 +357,71 @@ function renderDay(date, slots) {
   `;
 }
 
-function formatDate(dateStr) {
-  const date = new Date(dateStr);
+async function renderSlots() {
+  const content = document.getElementById("content");
 
-  return date.toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "short",
-    weekday: "short",
-  });
+  content.innerHTML = `
+    <h2>Add Slots</h2>
+
+    <div class="card">
+      <label>Day</label>
+      <select id="slot-day">
+        <option>Monday</option>
+        <option>Tuesday</option>
+        <option>Wednesday</option>
+        <option>Thursday</option>
+        <option>Friday</option>
+        <option>Saturday</option>
+        <option>Sunday</option>
+      </select>
+
+      <label>Time</label>
+      <select id="slot-time">
+        ${generateTimeOptions()}
+      </select>
+
+      <button class="primary-btn" onclick="handleAddSlot()">Add Slot</button>
+    </div>
+
+    <div id="slots-list"></div>
+  `;
+
+  loadSlots(); // 🔥 load existing slots
 }
 
-function renderSlots() {
-  document.getElementById("content").innerHTML = `<h2>Add Slots</h2>`;
+function generateTimeOptions() {
+  let options = "";
+
+  for (let i = 6; i <= 22; i++) {
+    const hour = i > 12 ? i - 12 : i;
+    const suffix = i >= 12 ? "PM" : "AM";
+
+    options += `<option value="${i}">${hour} ${suffix}</option>`;
+  }
+
+  return options;
 }
+
+window.handleAddSlot = async function () {
+  const day = document.getElementById("slot-day").value;
+  const hour = Number(document.getElementById("slot-time").value);
+
+  const start_time = `${String(hour).padStart(2, "0")}:00:00`;
+  const end_time = `${String(hour + 1).padStart(2, "0")}:00:00`;
+
+  try {
+    await createSlot({
+      day_of_week: day,
+      start_time,
+      end_time,
+    });
+
+    alert("Slot added!");
+    loadSlots(); // refresh
+  } catch (err) {
+    alert(err.message || "Error adding slot");
+  }
+};
 
 // ==============================
 // ONBOARDING FLOW
@@ -361,7 +436,7 @@ document.getElementById("teacher-btn").onclick = () => {
 };
 
 function showStep(stepId) {
-  document.querySelectorAll(".step").forEach(s => s.classList.add("hidden"));
+  document.querySelectorAll(".step").forEach((s) => s.classList.add("hidden"));
   document.getElementById(stepId).classList.remove("hidden");
 }
 
@@ -417,7 +492,7 @@ document.getElementById("submit-teacher").onclick = async () => {
 function getSelectedSubjects() {
   return Array.from(
     document.querySelectorAll(".checkbox-item input:checked")
-  ).map(input => input.value);
+  ).map((input) => input.value);
 }
 
 // ==============================
@@ -450,25 +525,61 @@ window.handleReject = async function (id) {
 function groupClasses(classes) {
   const map = {};
 
-  classes.forEach(cls => {
+  classes.forEach((cls) => {
     if (!map[cls.id]) {
       map[cls.id] = {
         id: cls.id,
         subject: cls.subject,
         student_name: cls.student_name,
         teacher_name: cls.teacher_name,
-        slots: []
+        slots: [],
       };
     }
 
-    // push slot if exists
     if (cls.start_time && cls.end_time) {
       map[cls.id].slots.push({
+        day_of_week: cls.day_of_week, // 🔥 NEW
         start_time: cls.start_time,
-        end_time: cls.end_time
+        end_time: cls.end_time,
       });
     }
   });
 
   return Object.values(map);
+}
+
+async function loadSlots() {
+  const container = document.getElementById("slots-list");
+
+  try {
+    const res = await getMySlots();
+    const slots = res.slots || [];
+
+    if (!slots.length) {
+      container.innerHTML = "<p>No slots added</p>";
+      return;
+    }
+
+    container.innerHTML = `
+      <h3>Your Slots</h3>
+      ${slots.map(renderSlotItem).join("")}
+    `;
+  } catch (err) {
+    container.innerHTML = "<p>Error loading slots</p>";
+  }
+}
+
+function renderSlotItem(slot) {
+  return `
+    <div class="slot-item">
+      <span>
+        ${slot.day_of_week} → 
+        ${formatOnlyTime(slot.start_time)} - ${formatOnlyTime(slot.end_time)}
+      </span>
+
+      <span class="status ${slot.status}">
+        ${slot.status.toUpperCase()}
+      </span>
+    </div>
+  `;
 }

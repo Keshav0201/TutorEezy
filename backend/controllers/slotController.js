@@ -3,7 +3,7 @@ const slotModel = require("../models/slotModel");
 // ➤ Create Slot
 async function createSlot(req, res) {
   const teacher_id = req.user.id;
-  const { start_time, end_time } = req.body;
+  const { day_of_week, start_time, end_time } = req.body;
 
   if (!start_time || !end_time) {
     return res.status(400).json({
@@ -18,7 +18,7 @@ async function createSlot(req, res) {
   }
 
 
-  slotModel.createSlot({ teacher_id, start_time, end_time }, (err) => {
+  slotModel.createSlot({ teacher_id, day_of_week, start_time, end_time }, (err) => {
     if (err) {
       console.error(err);
       return res.status(500).json({
@@ -109,10 +109,29 @@ async function getBookedSlots(req,res) {
   })
 }
 
+async function getMySlots(req, res) {
+  const userId = req.user.id; // from auth middleware
+
+  slotModel.getMySlots(userId, (err, slots) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        error: err.message || err
+      });
+    }
+
+    res.json({
+      success: true,
+      slots
+    });
+  });
+}
+
 module.exports = {
   createSlot,
   getTeacherSlots,
   getAvailableSlots,
   deleteSlot,
-  getBookedSlots
+  getBookedSlots,
+  getMySlots
 };

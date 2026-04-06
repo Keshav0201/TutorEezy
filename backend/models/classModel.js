@@ -162,7 +162,7 @@ function rejectClass(class_id, teacher_id, callback) {
 // ➤ Get Class Details (with slots 🔥)
 function getClassDetails(class_id, callback) {
   const query = `
-    SELECT c.*, ts.id AS slot_id, ts.start_time, ts.end_time
+    SELECT c.*, ts.id AS slot_id, ts.start_time, ts.end_time, ts.day_of_week
     FROM classes c
     LEFT JOIN teacher_slots ts ON ts.class_id = c.id
     WHERE c.id = ?
@@ -208,7 +208,8 @@ function getPendingClasses(userId, callback) {
     s.name AS student_name,
     t.name AS teacher_name,
     ts.start_time,
-    ts.end_time
+    ts.end_time,
+    ts.day_of_week
   FROM classes c
   JOIN users s ON c.student_id = s.id
   JOIN users t ON c.teacher_id = t.id
@@ -244,7 +245,8 @@ function getActiveClasses(userId, callback) {
     s.name AS student_name,
     t.name AS teacher_name,
     ts.start_time,
-    ts.end_time
+    ts.end_time,
+    ts.day_of_week
   FROM classes c
   JOIN users s ON c.student_id = s.id
   JOIN users t ON c.teacher_id = t.id
