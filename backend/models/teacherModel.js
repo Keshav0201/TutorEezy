@@ -51,7 +51,6 @@ function addSubjects({id,subject}, callback){
 }
 
 function getSubjects(teacher_id, callback){
-    console.log(teacher_id);
     const query = "SELECT id, subject FROM teacher_subjects WHERE teacher_id = ?";
     db.query(query,[teacher_id], (err,result) => {
         if(err){

@@ -99,12 +99,50 @@ function login(data, callback) {
   });
 }
 
-function getCurrentUser(id, callback){
-  const query = "SELECT id,name,email,isTeaching,isAdmin,newUser FROM users where id = ?";
-  db.query(query,[id],(err,result)=>{
-    if(err) return callback(err,null);
-    if(result.length === 0) return callback("User not found",null);
-    callback(null,result);
+function getCurrentUser(id, callback) {
+  const userQuery = `
+    SELECT id, name, email, isTeaching, isAdmin, newUser
+    FROM users
+    WHERE id = ?
+  `;
+
+  db.query(userQuery, [id], (err, userResult) => {
+    if (err) return callback(err, null);
+    if (userResult.length === 0) return callback("User not found", null);
+
+    const user = userResult[0];
+
+    if (user.isTeaching) {
+      const teacherQuery = `
+        SELECT experience, qualification, bio, hourly_rate
+        FROM teacher_details
+        WHERE user_id = ?
+      `;
+
+      db.query(teacherQuery, [id], (err, teacherResult) => {
+        if (err) return callback(err, null);
+
+        user.teacherDetails = teacherResult[0] || null;
+
+        return callback(null, user);
+      });
+    }
+
+    else {
+      const studentQuery = `
+        SELECT grade
+        FROM student_details
+        WHERE user_id = ?
+      `;
+
+      db.query(studentQuery, [id], (err, studentResult) => {
+        if (err) return callback(err, null);
+
+        user.studentDetails = studentResult[0] || null;
+
+        return callback(null, user);
+      });
+    }
   });
 }
 

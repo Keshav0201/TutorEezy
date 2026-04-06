@@ -123,7 +123,7 @@ exports.login = (req, res) => {
 
 exports.getCurrentUser = (req,res) => {
   const user_id = req.user.id;
-  userModel.getCurrentUser(user_id, (err,result) => {
+  userModel.getCurrentUser(user_id, (err,user) => {
     if(err){
       console.error(err);
       return res.status(500).json({
@@ -133,7 +133,7 @@ exports.getCurrentUser = (req,res) => {
 
     res.json({
       success: true,
-      user:result
+      user
     })
   })
 }

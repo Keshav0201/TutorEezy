@@ -1,7 +1,6 @@
 const db = require("../config/db");
 const { v4: uuidv4 } = require("uuid");
 
-
 // ➤ Request Class (TRANSACTION 🔥)
 function requestClass({ teacher_id, student_id, subject, slot_ids }, callback) {
   const class_id = uuidv4();
@@ -16,9 +15,7 @@ function requestClass({ teacher_id, student_id, subject, slot_ids }, callback) {
       if (err) return db.rollback(() => callback(err));
 
       if (result.length === 0) {
-        return db.rollback(() =>
-          callback({ message: "User not found" })
-        );
+        return db.rollback(() => callback({ message: "User not found" }));
       }
 
       if (result[0].isTeaching) {
@@ -85,7 +82,6 @@ function getTeacherClasses(teacher_id, callback) {
   });
 }
 
-
 // ➤ Student classes
 function getStudentClasses(student_id, callback) {
   const query = `
@@ -100,7 +96,6 @@ function getStudentClasses(student_id, callback) {
     callback(null, result);
   });
 }
-
 
 // ➤ Accept Class
 function acceptClass(class_id, teacher_id, callback) {
@@ -133,7 +128,6 @@ function acceptClass(class_id, teacher_id, callback) {
   });
 }
 
-
 // ➤ Reject Class
 function rejectClass(class_id, teacher_id, callback) {
   db.beginTransaction((err) => {
@@ -165,7 +159,6 @@ function rejectClass(class_id, teacher_id, callback) {
   });
 }
 
-
 // ➤ Get Class Details (with slots 🔥)
 function getClassDetails(class_id, callback) {
   const query = `
@@ -186,17 +179,88 @@ function getClassDetails(class_id, callback) {
       student_id: result[0].student_id,
       subject: result[0].subject,
       status: result[0].status,
-      slots: result.map(r => ({
+      slots: result.map((r) => ({
         id: r.slot_id,
         start_time: r.start_time,
-        end_time: r.end_time
-      }))
+        end_time: r.end_time,
+      })),
     };
 
     callback(null, classData);
   });
 }
 
+function getPendingClasses(userId, callback) {
+  // first get user role
+  const userQuery = "SELECT isTeaching FROM users WHERE id = ?";
+
+  db.query(userQuery, [userId], (err, userResult) => {
+    if (err) return callback(err, null);
+    if (userResult.length === 0) return callback("User not found", null);
+
+    const isTeacher = userResult[0].isTeaching;
+
+    const query = `
+  SELECT 
+    c.id,
+    c.subject,
+    c.status,
+    s.name AS student_name,
+    t.name AS teacher_name,
+    ts.start_time,
+    ts.end_time
+  FROM classes c
+  JOIN users s ON c.student_id = s.id
+  JOIN users t ON c.teacher_id = t.id
+  JOIN teacher_slots ts ON ts.class_id = c.id
+  WHERE ${isTeacher ? "c.teacher_id = ?" : "c.student_id = ?"}
+  AND c.status = 'pending'
+  ORDER BY ts.start_time ASC
+`;
+
+    db.query(query, [userId], (err, results) => {
+      if (err) return callback(err, null);
+
+      callback(null, results);
+    });
+  });
+}
+
+function getActiveClasses(userId, callback) {
+  // first get user role
+  const userQuery = "SELECT isTeaching FROM users WHERE id = ?";
+
+  db.query(userQuery, [userId], (err, userResult) => {
+    if (err) return callback(err, null);
+    if (userResult.length === 0) return callback("User not found", null);
+
+    const isTeacher = userResult[0].isTeaching;
+
+    const query = `
+  SELECT 
+    c.id,
+    c.subject,
+    c.status,
+    s.name AS student_name,
+    t.name AS teacher_name,
+    ts.start_time,
+    ts.end_time
+  FROM classes c
+  JOIN users s ON c.student_id = s.id
+  JOIN users t ON c.teacher_id = t.id
+  JOIN teacher_slots ts ON ts.class_id = c.id
+  WHERE ${isTeacher ? "c.teacher_id = ?" : "c.student_id = ?"}
+  AND c.status = 'accepted'
+  ORDER BY ts.start_time ASC
+`;
+
+    db.query(query, [userId], (err, results) => {
+      if (err) return callback(err, null);
+
+      callback(null, results);
+    });
+  });
+}
 
 module.exports = {
   requestClass,
@@ -205,4 +269,6 @@ module.exports = {
   acceptClass,
   rejectClass,
   getClassDetails,
+  getPendingClasses,
+  getActiveClasses,
 };

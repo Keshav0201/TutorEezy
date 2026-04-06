@@ -12,7 +12,7 @@ function getToken() {
 
 function logout() {
   localStorage.removeItem("token");
-  window.location.href = "/pages/login.html"; // adjust if needed
+  window.location.href = "auth.html"; // adjust if needed
 }
 
 // ==============================
@@ -162,6 +162,18 @@ export async function requestClass({
       subject,
       slot_ids
     })
+  });
+}
+
+export async function getActiveClasses() {
+  return apiRequest("/classes/active", {
+    method: "GET",
+  });
+}
+
+export async function getPendingClasses() {
+  return apiRequest("/classes/pending", {
+    method: "GET",
   });
 }
 

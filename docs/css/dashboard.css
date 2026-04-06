@@ -185,3 +185,55 @@ body {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
+.card {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.card h2, .card h3 {
+  margin-top: 0;
+}
+
+.sidebar li.active {
+  background: #273c75;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.actions {
+  margin-top: 10px;
+}
+
+.actions button {
+  margin-right: 10px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.actions button:first-child {
+  background: #44bd32;
+  color: white;
+}
+
+.actions button:last-child {
+  background: #e84118;
+  color: white;
+}
+
+.card ul {
+  padding-left: 18px;
+  margin: 5px 0;
+}
+
+.card li {
+  margin-bottom: 4px;
+}

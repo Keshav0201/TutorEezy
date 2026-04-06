@@ -30,7 +30,6 @@ async function requestClass(req, res) {
   );
 }
 
-
 // ➤ Teacher dashboard
 function getTeacherClasses(req, res) {
   const teacher_id = req.user.id;
@@ -41,7 +40,6 @@ function getTeacherClasses(req, res) {
     res.json({ success: true, classes: result });
   });
 }
-
 
 // ➤ Student classes
 function getStudentClasses(req, res) {
@@ -105,6 +103,29 @@ function getClassDetails(req, res) {
   });
 }
 
+function getPendingClasses(req,res){
+  const userId = req.user.id;
+
+  classModel.getPendingClasses(userId, (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err });
+    }
+
+    res.json({ classes: result });
+  });
+}
+
+function getActiveClasses(req,res){
+  const userId = req.user.id;
+
+  classModel.getActiveClasses(userId, (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err });
+    }
+
+    res.json({ classes: result });
+  });
+}
 
 module.exports = {
   requestClass,
@@ -113,4 +134,6 @@ module.exports = {
   acceptClass,
   rejectClass,
   getClassDetails,
+  getPendingClasses,
+  getActiveClasses
 };
