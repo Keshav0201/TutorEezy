@@ -1,4 +1,3 @@
-/* NAVBAR */
 .navbar {
   position: fixed;
   top: 0;
@@ -7,33 +6,25 @@
   height: 60px;
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 
-  background: #2f3640;
-  color: white;
+  background: var(--gradient);
+  color: var(--white);
 
-  padding: 0 40px;
-  box-sizing: border-box;
-
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  z-index: 1000;
+  padding: 0 20px; /* 🔥 reduced from 40px */
+  box-sizing: border-box; /* 🔥 IMPORTANT */
 }
-
-/* Logo */
 .logo {
   font-size: 20px;
   font-weight: bold;
-  letter-spacing: 0.5px;
   cursor: pointer;
 }
 
-/* Nav links */
 .nav-links a {
   margin: 0 15px;
   text-decoration: none;
-  color: #dcdde1;
-  font-weight: 500;
+  color: rgba(255,255,255,0.8);
   transition: 0.2s;
 }
 
@@ -41,26 +32,19 @@
   color: white;
 }
 
-/* Login button */
-.auth-buttons button {
+.auth-buttons button,
+#logout-btn {
   padding: 8px 16px;
-  background: #273c75;
-  color: white;
+  background: white;
+  color: var(--primary);
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
   transition: 0.2s;
 }
 
-.auth-buttons button:hover {
-  background: #40739e;
-}
-
-#logout-btn {
-  background: #e84118;
-  border: none;
-  color: white;
-  padding: 8px 15px;
-  cursor: pointer;
-  border-radius: 5px;
+.auth-buttons button:hover,
+#logout-btn:hover {
+  transform: translateY(-1px);
 }

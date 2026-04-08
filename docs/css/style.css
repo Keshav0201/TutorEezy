@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f5f6fa;
+  background: var(--primary-light);
 }
 
 .hero {
@@ -9,7 +9,7 @@ body {
   padding: 100px 20px;
   text-align: center;
 
-  background: linear-gradient(135deg, #273c75, #40739e);
+  background: var(--gradient);
   color: white;
 }
 
@@ -323,4 +323,13 @@ footer {
 .close-btn:hover {
   color: #000;
   transform: scale(1.2);
+}
+
+button {
+  background: var(--gradient);
+  color: white;
+}
+
+footer {
+  background: var(--primary-dark);
 }

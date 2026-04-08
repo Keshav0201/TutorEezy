@@ -1,9 +1,8 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f5f6fa;
+  background: var(--primary-light);
 }
-
 /* LAYOUT */
 .container {
   margin-top: 60px;
@@ -20,7 +19,7 @@ body {
   width: 220px;
   height: calc(100vh - 60px);
 
-  background: #353b48;
+  background: var(--primary-dark);
   color: white;
 
   padding: 20px;
@@ -142,7 +141,7 @@ body {
 .primary-btn {
   width: 100%;
   padding: 12px;
-  background: #273c75;
+  background: var(--gradient);
   color: white;
   border: none;
   border-radius: 8px;
@@ -179,10 +178,10 @@ body {
 }
 .card {
   background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
   padding: 20px;
   margin-bottom: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   width: 100%;
 }
 
@@ -191,7 +190,7 @@ body {
 }
 
 .sidebar li.active {
-  background: #273c75;
+  background: var(--primary);
 }
 
 .card-list {
@@ -289,20 +288,17 @@ body {
   font-weight: bold;
 }
 
-/* FREE */
 .status.free {
-  background: #d4f8d4;
-  color: #2ecc71;
+  background: #e0f2fe;
+  color: #0284c7;
 }
 
-/* PENDING */
 .status.pending {
-  background: #fff3cd;
-  color: #f39c12;
+  background: #fef3c7;
+  color: #d97706;
 }
 
-/* BOOKED */
 .status.booked {
-  background: #f8d7da;
-  color: #e74c3c;
+  background: #fee2e2;
+  color: #dc2626;
 }

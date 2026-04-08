@@ -503,7 +503,7 @@ function getSelectedSubjects() {
 
 document.getElementById("logout-btn").onclick = () => {
   localStorage.removeItem("token");
-  window.location.href = "auth.html";
+  window.location.replace("index.html");
 };
 
 window.handleAccept = async function (id) {
