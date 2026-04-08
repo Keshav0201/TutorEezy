@@ -14,6 +14,7 @@ async function requestClass(req, res) {
   classModel.requestClass(
     { teacher_id, student_id, subject, slot_ids },
     (err) => {
+
       if (err) {
         console.error(err);
         return res.status(500).json({

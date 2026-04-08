@@ -7,7 +7,7 @@
 
 body {
   height: 100vh;
-  background: linear-gradient(135deg, #1f1c2c, #928dab);
+  background: linear-gradient(135deg, #e0ecff, #c7d9ff);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,11 +15,12 @@ body {
 
 .container {
   width: 350px;
-  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(20px);
   border-radius: 16px;
   padding: 30px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  background: rgba(47, 54, 64, 0.9); /* slightly transparent dark */
+  backdrop-filter: blur(10px);
 }
 
 .toggle {
@@ -49,6 +50,7 @@ body {
 .form {
   display: none;
   flex-direction: column;
+  
 }
 
 .form.active {
@@ -88,4 +90,27 @@ button {
 button:hover {
   background: #574bff;
   transform: scale(1.05);
+}
+
+#password-rules {
+  text-align: left;
+  font-size: 13px;
+  margin: 10px 0;
+}
+
+#password-rules p {
+  margin: 3px 0;
+}
+
+.valid {
+  color: green;
+}
+
+.invalid {
+  color: red;
+}
+
+#match-msg {
+  font-size: 13px;
+  margin-bottom: 10px;
 }

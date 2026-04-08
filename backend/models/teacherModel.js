@@ -81,7 +81,8 @@ function getAllTeachers(callback) {
         JOIN teacher_details td ON u.id = td.user_id
         LEFT JOIN teacher_subjects ts ON u.id = ts.teacher_id
         WHERE u.isTeaching = TRUE
-        GROUP BY u.id;
+        GROUP BY u.id
+        ORDER BY td.rating DESC;
     `;
     db.query(query,(err,result) => {
         if(err) return callback(err,null);

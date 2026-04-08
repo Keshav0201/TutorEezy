@@ -265,6 +265,7 @@ footer {
   transition: all 0.2s ease;
 
   box-shadow: 0 4px 12px rgba(39, 60, 117, 0.3);
+  margin-top: 10px;
 }
 
 .primary-btn:hover {
