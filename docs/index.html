@@ -1,13 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
     <title>TutorEezy</title>
-    <link rel="stylesheet" href="./css/style.css">
-</head>
-<body>
-    <button onclick="goToAuth()">Go to auth</button>
-    <script src="./js/script.js"></script>
-</body>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="logo">TutorEezy</div>
+      <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#teachers">Find Teachers</a>
+        <a href="#">Become a Teacher</a>
+      </div>
+      <div class="auth-buttons">
+        <button onclick="goToAuth()">Login</button>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <h1>Find the Best Tutors Near You</h1>
+      <p>Connect with expert teachers and start learning today.</p>
+      <button>Browse Teachers</button>
+    </section>
+
+    <!-- TEACHER SECTION -->
+    <section id="teachers" class="teachers-section">
+      <h2>Find Teachers</h2>
+
+      <div class="search-bar">
+        <input type="text" placeholder="Search by subject or name..." />
+        <button class="filter-btn">⚙️</button>
+      </div>
+
+      <div class="teacher-cards" id="teacherContainer">
+        <!-- Cards will come from JS -->
+      </div>
+    </section>
+
+    <!-- DEVELOPERS -->
+    <section class="developers">
+      <h2>Meet the Developers</h2>
+
+      <div class="dev-container">
+        <div class="dev-card">
+          <img class="dev-img" src="https://picsum.photos/100" alt="Dev 1" />
+          <h3>Dev 1</h3>
+          <p>Frontend Developer</p>
+
+          <div class="socials">
+            <a href="#"
+              ><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+            /></a>
+            <a href="#"
+              ><img
+                src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+            /></a>
+            <a href="#"
+              ><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png"
+            /></a>
+          </div>
+        </div>
+
+        <div class="dev-card">
+          <img class="dev-img" src="https://picsum.photos/100" alt="Dev 1" />
+          <h3>Dev 2</h3>
+          <p>Backend Developer</p>
+
+          <div class="socials">
+            <a href="#"
+              ><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+            /></a>
+            <a href="#"
+              ><img
+                src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+            /></a>
+            <a href="#"
+              ><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png"
+            /></a>
+          </div>
+        </div>
+
+        <div class="dev-card">
+          <img
+            class="dev-img"
+            src="https://media.licdn.com/dms/image/v2/D5603AQH2im5URqnfWg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1722061223260?e=2147483647&v=beta&t=Y7rGkxANpb5jEMFhr7bkA1UhmvqWjF7CAHHL3aSBH4Y"
+            alt="Dev 1"
+          />
+          <h3>Dev 3</h3>
+          <p>Full stack Developer</p>
+
+          <div class="socials">
+            <a href="#"
+              ><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+            /></a>
+            <a href="#"
+              ><img
+                src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+            /></a>
+            <a href="#"
+              ><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png"
+            /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>© 2026 TutorEezy. All rights reserved.</p>
+    </footer>
+
+    <div id="requestModal" class="modal hidden">
+      <div class="modal-card">
+        <h2>Request Class</h2>
+
+        <!-- SUBJECT -->
+        <label>Select Subject</label>
+        <div id="subjectContainer" class="subject-container"></div>
+
+        <!-- SLOTS -->
+        <div id="slotsContainer">
+          <p>Loading slots...</p>
+        </div>
+
+        <!-- ACTION -->
+        <button id="confirmRequest" class="primary-btn">Continue</button>
+      </div>
+    </div>
+
+    <script type="module" src="./js/script.js"></script>
+  </body>
 </html>

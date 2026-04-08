@@ -117,6 +117,12 @@ export async function getSubjects(teacherId) {
   });
 }
 
+export async function getTeachers() {
+  return apiRequest(`/teachers`, {
+    method: "GET"
+  });
+}
+
 // ==============================
 // ⏰ SLOT APIs
 // ==============================
