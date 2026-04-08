@@ -32,10 +32,12 @@ async function init() {
       sidebar.classList.add("hidden");
     } else {
       loadDashboard();
-      loadPage("profile"); // default page
+      loadPage("profile"); 
     }
   } catch (err) {
-    console.error(err);
+    console.error("User not authenticated");
+    localStorage.removeItem("token");
+    window.location.href = "auth.html";
   }
 }
 
@@ -583,3 +585,7 @@ function renderSlotItem(slot) {
     </div>
   `;
 }
+
+document.getElementById("logo").addEventListener("click", () => {
+  window.location.href = "index.html";
+});

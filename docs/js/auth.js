@@ -1,5 +1,5 @@
 
-import { signup as signupAPI, login as loginAPI } from "./api.js";
+import { signup as signupAPI, login as loginAPI , checkLogin } from "./api.js";
 
 async function signup() {
   const email = document.getElementById("signup-email").value;
@@ -54,8 +54,8 @@ async function login() {
   }
 }
 
-function checkLogin() {
-  if (localStorage.getItem("token")) {
+async function checkIfLogin() {
+  if (await checkLogin()) {
     window.location.href = "dashboard.html";
   }
 }
@@ -77,7 +77,7 @@ document
   });
 
 
-checkLogin();
+checkIfLogin();
 
 document
   .getElementById("signup-button")

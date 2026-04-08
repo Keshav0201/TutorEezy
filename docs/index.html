@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <title>TutorEezy</title>
     <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/navbar.css" />
   </head>
   <body>
     <!-- NAVBAR -->
     <nav class="navbar">
-      <div class="logo">TutorEezy</div>
+      <div class="logo" id="logo">TutorEezy</div>
       <div class="nav-links">
         <a href="#">Home</a>
         <a href="#teachers">Find Teachers</a>
-        <a href="#">Become a Teacher</a>
+        <a class="hidden" id="go-to-dashboard" href="dashboard.html">Dashboard</a>
       </div>
       <div class="auth-buttons">
-        <button onclick="goToAuth()">Login</button>
+        <button id="authBtn">Login</button>
       </div>
     </nav>
 
@@ -23,7 +24,7 @@
     <section class="hero">
       <h1>Find the Best Tutors Near You</h1>
       <p>Connect with expert teachers and start learning today.</p>
-      <button>Browse Teachers</button>
+      <button id="browse-teachers-button">Browse Teachers</button>
     </section>
 
     <!-- TEACHER SECTION -->
@@ -46,20 +47,20 @@
 
       <div class="dev-container">
         <div class="dev-card">
-          <img class="dev-img" src="https://picsum.photos/100" alt="Dev 1" />
+          <img class="dev-img" src="https://media.licdn.com/dms/image/v2/D5603AQH2im5URqnfWg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1722061223260?e=2147483647&v=beta&t=Y7rGkxANpb5jEMFhr7bkA1UhmvqWjF7CAHHL3aSBH4Y" alt="Dev 1" />
           <h3>Dev 1</h3>
-          <p>Frontend Developer</p>
+          <p>Full Stack Developer</p>
 
           <div class="socials">
-            <a href="#"
-              ><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+            <a href="https://github.com/Keshav0201" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"
+              ><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="github"
             /></a>
-            <a href="#"
+            <a href="https://www.instagram.com/keshav.0201" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"
               ><img
-                src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+                src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="insta"
             /></a>
-            <a href="#"
-              ><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png"
+            <a href="https://www.linkedin.com/in/keshavdidwania/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"
+              ><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="linkedIn"
             /></a>
           </div>
         </div>
@@ -67,18 +68,18 @@
         <div class="dev-card">
           <img class="dev-img" src="https://picsum.photos/100" alt="Dev 1" />
           <h3>Dev 2</h3>
-          <p>Backend Developer</p>
+          <p>Designer</p>
 
           <div class="socials">
-            <a href="#"
-              ><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+            <a href="https://github.com/Keshav0201" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"
+              ><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="github"
             /></a>
-            <a href="#"
+            <a href="https://www.instagram.com/keshav.0201" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"
               ><img
-                src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+                src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="insta"
             /></a>
-            <a href="#"
-              ><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png"
+            <a href="https://www.linkedin.com/in/keshavdidwania/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"
+              ><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="linkedIn"
             /></a>
           </div>
         </div>
@@ -86,22 +87,22 @@
         <div class="dev-card">
           <img
             class="dev-img"
-            src="https://media.licdn.com/dms/image/v2/D5603AQH2im5URqnfWg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1722061223260?e=2147483647&v=beta&t=Y7rGkxANpb5jEMFhr7bkA1UhmvqWjF7CAHHL3aSBH4Y"
+            src="https://picsum.photos/100"
             alt="Dev 1"
           />
           <h3>Dev 3</h3>
-          <p>Full stack Developer</p>
+          <p>Designer</p>
 
           <div class="socials">
-            <a href="#"
-              ><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+            <a href="https://github.com/Keshav0201" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"
+              ><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="github"
             /></a>
-            <a href="#"
+            <a href="https://www.instagram.com/keshav.0201" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"
               ><img
-                src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+                src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="insta"
             /></a>
-            <a href="#"
-              ><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png"
+            <a href="https://www.linkedin.com/in/keshavdidwania/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"
+              ><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="linkedIn"
             /></a>
           </div>
         </div>
@@ -115,6 +116,7 @@
 
     <div id="requestModal" class="modal hidden">
       <div class="modal-card">
+        <button class="close-btn" onclick="closeModal()">×</button>
         <h2>Request Class</h2>
 
         <!-- SUBJECT -->

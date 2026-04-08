@@ -5,7 +5,6 @@ const classModel = require("../models/classModel");
 async function requestClass(req, res) {
   const student_id = req.user.id;
   const { teacher_id, subject, slot_ids } = req.body;
-
   if (!teacher_id || !subject || !slot_ids?.length) {
     return res.status(400).json({
       error: "Missing fields",

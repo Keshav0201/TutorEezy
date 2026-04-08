@@ -1,7 +1,9 @@
-import { getTeachers, getAvailableSlots }from "./api.js";
+import { getTeachers, getAvailableSlots , requestClass , checkLogin }from "./api.js";
 
 const container = document.getElementById("teacherContainer");
 const searchInput = document.querySelector(".search-bar input");
+const authBtn = document.getElementById("authBtn");
+const dashGoTO = document.getElementById("go-to-dashboard");
 
 // STATE
 let selectedTeacher = null;
@@ -16,6 +18,27 @@ async function loadTeachers(search = "") {
   } catch (err) {
     console.error("Error loading teachers:", err);
     container.innerHTML = "Failed to load teachers";
+  }
+}
+
+async function setupAuthButton() {
+  const isLoggedIn = await checkLogin();
+
+  if (isLoggedIn) {
+    authBtn.innerText = "Logout";
+    dashGoTO.classList.remove("hidden");
+
+    authBtn.onclick = () => {
+      localStorage.removeItem("token");
+      window.location.reload();
+    };
+
+  } else {
+    authBtn.innerText = "Login";
+    dashGoTO.classList.add("hidden");
+    authBtn.onclick = () => {
+      window.location.href = "auth.html";
+    };
   }
 }
 
@@ -174,22 +197,58 @@ function renderSlots(slots) {
 }
 
 /* ================= CONFIRM ================= */
-document.getElementById("confirmRequest").addEventListener("click", () => {
+document.getElementById("confirmRequest").addEventListener("click", async () => {
   if (!selectedSubject || selectedSlots.length === 0) {
     alert("Please select subject and at least one slot");
     return;
   }
 
-  console.log({
-    teacher: selectedTeacher,
-    subject: selectedSubject,
-    slots: selectedSlots,
-  });
+  if(!(await checkLogin())){
+    alert("Please login to request class");
+    closeModal();
+    window.location.href = "auth.html";
+    return;
+  }
 
-  alert("Next step: backend integration");
+  try {
+    const res = await requestClass({
+      teacher_id : selectedTeacher,
+      subject : selectedSubject,
+      slot_ids : selectedSlots
+    });
+
+    if (res.success) {
+      alert("Class requested successfully!");
+    } else {
+      alert("Request failed");
+    }
+  } catch(err){
+    console.error(err);
+    alert("Error requesting class");
+  }
 
   closeModal();
 });
 
+
+document.getElementById("requestModal").addEventListener("click", (e) => {
+  if (e.target.id === "requestModal") {
+    closeModal();
+  }
+});
+
+window.closeModal = function () {
+  closeModal();
+};
+
+document.getElementById("logo").addEventListener("click", () => {
+  window.location.href = "index.html";
+});
+
+document.getElementById("browse-teachers-button").addEventListener("click",() => {
+  window.location.href = "index.html#teachers";
+})
+
 /* ================= INIT ================= */
 loadTeachers();
+setupAuthButton();

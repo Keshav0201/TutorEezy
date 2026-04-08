@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 // ➤ Request Class (TRANSACTION 🔥)
 function requestClass({ teacher_id, student_id, subject, slot_ids }, callback) {
   const class_id = uuidv4();
-
+  
   db.beginTransaction((err) => {
     if (err) return callback(err);
 

@@ -220,3 +220,20 @@ export async function getBookedSlots() {
     method: "GET",
   });
 }
+
+export async function checkLogin() {
+  const token = localStorage.getItem("token");
+  if (!token) return false;
+
+  try {
+    const data = await apiRequest("/auth/verify", {
+      method: "GET",
+    });
+
+    return data.success === true; 
+
+  } catch (err) {
+    console.error(err);
+    return false; 
+  }
+}
