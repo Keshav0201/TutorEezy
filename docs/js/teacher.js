@@ -9,6 +9,7 @@ const container = document.getElementById("teacherContainer");
 
 const params = new URLSearchParams(window.location.search);
 const teacherId = params.get("id");
+const confButton = document.getElementById("confirmRequest");
 
 let currentTeacher = null;
 let selectedSubject = null;
@@ -27,6 +28,7 @@ async function loadTeacher() {
     const teacher = res.teacher; // adjust if your API differs
 
     currentTeacher = teacher;
+    document.title = teacher.name;
 
     renderTeacher(teacher);
   } catch (err) {
@@ -97,9 +99,15 @@ window.closeModal = function () {
 async function loadSlots() {
   const slotDiv = document.getElementById("slotsContainer");
   slotDiv.innerHTML = "Loading...";
+  confButton.disabled = false;
 
   try {
     const res = await getAvailableSlots(teacherId);
+    if(res.slots.length == 0){
+        slotDiv.innerHTML = "No available slots";
+        confButton.disabled = true;
+        return;
+    }
     renderSlots(res.slots || []);
   } catch {
     slotDiv.innerHTML = "Error loading slots";
