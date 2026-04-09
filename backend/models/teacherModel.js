@@ -31,16 +31,39 @@ function addDetails(data, callback) {
   );
 }
 
-function getDetails(id, callback) {
-  const query = "SELECT * FROM teacher_details WHERE user_id = ?";
-  db.query(query, [id], (err, result) => {
-    if (err) {
-      return callback(err, null);
+function getDetails(teacherId, callback) {
+  const query = `
+    SELECT 
+      u.id,
+      u.name,
+      td.experience,
+      td.qualification,
+      td.bio,
+      td.hourly_rate,
+      td.rating,
+      GROUP_CONCAT(ts.subject) AS subjects
+    FROM users u
+    JOIN teacher_details td ON u.id = td.user_id
+    LEFT JOIN teacher_subjects ts ON u.id = ts.teacher_id
+    WHERE u.id = ?
+    GROUP BY u.id
+  `;
+
+  db.query(query, [teacherId], (err, results) => {
+    if (err) return callback(err);
+
+    if (!results.length) {
+      return callback(null, null);
     }
-    if (result.length === 0) {
-      return callback("Teacher does not exists");
-    }
-    callback(null, result[0]);
+
+    const teacher = results[0];
+
+    // 🔥 Convert subjects string → array
+    teacher.subjects = teacher.subjects
+      ? teacher.subjects.split(",")
+      : [];
+
+    callback(null, teacher);
   });
 }
 

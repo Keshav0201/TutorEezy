@@ -123,6 +123,12 @@ export async function getTeachers() {
   });
 }
 
+export async function getTeacherDetails(id) {
+  return apiRequest(`/teachers/${id}`,{
+    method: "GET"
+  });
+}
+
 // ==============================
 // ⏰ SLOT APIs
 // ==============================

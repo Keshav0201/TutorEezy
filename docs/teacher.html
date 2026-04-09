@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher Profile</title>
+
+  <link rel="stylesheet" href="./css/teacher.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">
+      <a href="index.html">TutorEezy</a>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="teacher-container" id="teacherContainer">
+    <p>Loading...</p>
+  </div>
+
+  <!-- MODAL -->
+  <div id="requestModal" class="modal hidden">
+    <div class="modal-card">
+
+      <button class="close-btn" onclick="closeModal()">×</button>
+
+      <h2>Request Class</h2>
+
+      <div id="subjectContainer" class="subject-container"></div>
+
+      <div id="slotsContainer" class="slots-container"></div>
+
+      <button id="confirmRequest" class="primary-btn">
+        Confirm Request
+      </button>
+
+    </div>
+  </div>
+
+  <script type="module" src="./js/teacher.js"></script>
+</body>
+</html>
