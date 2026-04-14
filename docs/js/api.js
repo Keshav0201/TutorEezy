@@ -32,7 +32,7 @@ async function apiRequest(endpoint, options = {}) {
   };
 
   try {
-    const response = await fetchWithRetry(`${BASE_URL}${endpoint}`, config);
+    const response = await fetch(`${BASE_URL}${endpoint}`, config);
 
     let data;
     try {
