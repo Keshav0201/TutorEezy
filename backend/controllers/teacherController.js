@@ -81,7 +81,8 @@ async function getSubjects(req, res) {
 }
 
 async function getAllTeachers(req, res) {
-  teacherModel.getAllTeachers((err, result) => {
+  const name = req.query.name;
+  teacherModel.getAllTeachers(name,(err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).json({

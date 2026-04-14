@@ -117,9 +117,9 @@ export async function getSubjects(teacherId) {
   });
 }
 
-export async function getTeachers() {
-  return apiRequest(`/teachers`, {
-    method: "GET"
+export async function getTeachers(name) {
+  return apiRequest(`/teachers?name=${encodeURIComponent(name)}`, {
+    method: "GET",
   });
 }
 

@@ -12,7 +12,7 @@ async function loadTeachers(search = "") {
     renderTeachers(data.teachers || []);
   } catch (err) {
     console.error("Error loading teachers:", err);
-    container.innerHTML = "Failed to load teachers";
+    container.innerHTML = "No available teachers";
   }
 }
 
@@ -67,9 +67,10 @@ function renderTeachers(teachers) {
   });
 }
 
-/* ================= SEARCH ================= */
-searchInput.addEventListener("input", (e) => {
-  loadTeachers(e.target.value);
+searchInput.addEventListener("keydown", (e) => {
+  if(e.key === "Enter"){
+    loadTeachers(searchInput.value);
+  }
 });
 
 /* ================= NAVIGATION ================= */

@@ -12,9 +12,7 @@ const cors = require('cors');
 const PORT = process.env.PORT || 3016;
 
 app.use(express.json());
-app.use(cors({
-  origin: "http://127.0.0.1:5500",
-}));
+app.use(cors());
 
 app.get("/",(req,res) => {
     res.send("Server running");
