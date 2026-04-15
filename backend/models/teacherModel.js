@@ -106,7 +106,8 @@ function getAllTeachers(name,callback) {
         WHERE u.isTeaching = TRUE
         AND u.name LIKE ?
         GROUP BY u.id
-        ORDER BY td.rating DESC;
+        ORDER BY td.rating DESC
+        LIMIT 10;
     `;
     db.query(query,[`%${name}%`],(err,result) => {
         if(err) return callback(err,null);

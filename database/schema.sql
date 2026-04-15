@@ -69,8 +69,9 @@ CREATE TABLE teacher_slots (
 
     teacher_id VARCHAR(36) NOT NULL,
 
-    start_time DATETIME NOT NULL,
-    end_time DATETIME NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    day_of_week VARCHAR(10),
 
     class_id VARCHAR(36), -- NULL = free
 
